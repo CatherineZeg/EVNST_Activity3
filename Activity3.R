@@ -107,16 +107,104 @@ total_CO2 <- NorthA %>%
 
 #plot the total CO2 emissions
 ggplot(total_CO2, 
-       aes(x = Year, y = CO2)) +
+       aes(x = Year, y = total)) +
   geom_point() +
   geom_line() +
   labs(x = "Year",
        y = "Total CO2 Emissions of the US, Canada, and Mexico",
        title = "North America CO2 Emissions")
   
+#HW ----
+  
+#Question 1:
 
+#creating a data frame of Polish, French, and Italian emissions
+pfi_CO2 <- datCO2[datCO2$Entity == "Poland" | 
+                       datCO2$Entity == "France" |
+                       datCO2$Entity == "Italy",]
 
-#Optional challenge if you have extra time
-Try and find an answer through your search engine: how would you add subscripts for CO in your
-plot axes label?
+no_scientific <- function(x) format(x, big.mark = ",", decimal.mark = ".", scientific = FALSE)
+
+#plot the CO2 emissions of the three chosen countries
+ggplot(pfi_CO2, 
+       aes(x = Year, y = CO2, col = Entity)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Emissions",
+       x = "Year",
+       y = "Fossil Fuel emissions") 
+  #scale_y_continuous(breaks = seq(0, 6000000000, by = 200000000), labels = no_scientific) 
+  #theme(axis.ticks.length  = unit(0.5, "cm"))
+  #scale_y_continuous(labels = no_scientific)
+  
+  
+#Question 2:
+  
+#create df summing all countries CO2 emissions per year
+CO2_emissions_agg <- datCO2 %>%
+  group_by(Year) %>%
+  summarise(total = sum(CO2))
+
+#use ggplot to plot World CO2 emissions
+ggplot(CO2_emissions_agg, 
+       aes(x = Year, y = total)) +
+      geom_point() +
+      geom_line() +
+  labs(title = "Total World CO2 emissions",
+       x = "Year",
+       y = "Fossil Fuel Emissions")
+
+#create df summing all hemispheres temperature anomalies per date
+temp_anomaly_agg <- climate_df %>%
+  group_by(date) %>%
+  summarise(total = sum(temperature_anomaly))
+
+#use ggplot to plot the world temp
+ggplot(temp_anomaly_agg, 
+       aes(x = date, y = total)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "World Temperature",
+       x = "Year",
+       y = "Temperature")
+       
+
+#Question 3:
+#trying to recreate the plot on page 9 of FISHERIES OF THE UNITED STATES 2023 report
+#https://s3.amazonaws.com/media.fisheries.noaa.gov/2026-02/FUS-2023-web.pdf
+
+#load in the data from NOAA fisheries
+fisheries <- read.csv("/cloud/project/activity03/FOSS_landings.csv", skip = 1)
+
+#removes row 11, 2024, so that all the data is from 2014-2023
+fisheries_new <- fisheries[-c(11),]
+
+str(fisheries_new)
+
+#Insert int versions of Pounds, Metric.Tons, and Dollars, columns of fisheries df
+fisheries_new$Pounds_int <- as.numeric(gsub(",", "", fisheries_new$Pounds))
+fisheries_new$Metric.Tons_int <- as.numeric(gsub(",", "", fisheries_new$Metric.Tons))
+fisheries_new$Dollars_int <- as.numeric(gsub(",", "", fisheries_new$Dollars))
+
+                                   
+barplot(fisheries_new$Pounds_int,
+        names.arg = fisheries_new$Year,
+        xlab = "Year",
+        ylab = "Landings (billions of pounds)",
+        main = "U.S. Commercial Landings and Revenue",
+        yaxt = "n",
+        xaxt = "n") 
+par(new = TRUE) 
+plot(fisheries_new$Dollars_int, 
+     pch = 19, 
+     type = "b",
+     col = "blue", 
+     axes = FALSE, 
+     ylab = "", 
+     xlab = "")
+axis(2, seq(0, 12000000000, by = 3000000000),
+     seq(0,12, by = 3), las = 2, tck = 0) 
+axis(1, at = c(0.5, 2.5, 4.5, 6.5, 11.5),
+    labels = c("2015", "2017", "2019", "2021", "2023"), tck = 0)
+
   
