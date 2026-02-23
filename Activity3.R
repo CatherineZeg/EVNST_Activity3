@@ -186,25 +186,42 @@ fisheries_new$Pounds_int <- as.numeric(gsub(",", "", fisheries_new$Pounds))
 fisheries_new$Metric.Tons_int <- as.numeric(gsub(",", "", fisheries_new$Metric.Tons))
 fisheries_new$Dollars_int <- as.numeric(gsub(",", "", fisheries_new$Dollars))
 
+#loading in impact font
+install.packages("showtext")
+library(showtext)
+font_add("impact", "/cloud/project/impact.ttf")
+
+font_add_google("impact", family = "impact")
+
                                    
 barplot(fisheries_new$Pounds_int,
         names.arg = fisheries_new$Year,
         xlab = "Year",
         ylab = "Landings (billions of pounds)",
-        main = "U.S. Commercial Landings and Revenue",
         yaxt = "n",
-        xaxt = "n") 
+        xaxt = "n",
+        family = "Arial") 
+title("U.S. Commercial Landings and Revenue", 
+      adj = 0, 
+      line = 3)
+#font.main = "impact")
+mtext("from 2014 to 2023", 
+      side = 3,
+      line = 2,
+      adj = 0)
+axis(2, seq(0, 12000000000, by = 3000000000),
+     seq(0,12, by = 3), las = 2, tck = 0) 
+axis(1, at = c(0.5, 2.5, 4.5, 6.5, 11.5),
+    labels = c("2015", "2017", "2019", "2021", "2023"), tck = 0)
+axis(4, seq(0, 12000000000, by = 3000000000),
+     seq(0,12, by = 3), las = 2, tck = 0)
 par(new = TRUE) 
 plot(fisheries_new$Dollars_int, 
      pch = 19, 
      type = "b",
      col = "blue", 
-     axes = FALSE, 
+     axes = FALSE,
      ylab = "", 
      xlab = "")
-axis(2, seq(0, 12000000000, by = 3000000000),
-     seq(0,12, by = 3), las = 2, tck = 0) 
-axis(1, at = c(0.5, 2.5, 4.5, 6.5, 11.5),
-    labels = c("2015", "2017", "2019", "2021", "2023"), tck = 0)
 
   
