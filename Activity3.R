@@ -123,19 +123,19 @@ pfi_CO2 <- datCO2[datCO2$Entity == "Poland" |
                        datCO2$Entity == "France" |
                        datCO2$Entity == "Italy",]
 
-no_scientific <- function(x) format(x, big.mark = ",", decimal.mark = ".", scientific = FALSE)
-
 #plot the CO2 emissions of the three chosen countries
 ggplot(pfi_CO2, 
        aes(x = Year, y = CO2, col = Entity)) +
-  geom_point() +
-  geom_line() +
-  labs(title = "Emissions",
+  geom_line(size = 0.75) +
+  scale_color_manual(
+    values = c("France" = "#EE4266", "Poland" = "#FFD23F", "Italy" = "#540D6E"),
+    breaks = c("France", "Poland", "Italy") 
+  )+
+  labs(title = "CO2 Emissions of France, Poland, and Italy",
        x = "Year",
-       y = "Fossil Fuel emissions") 
-  #scale_y_continuous(breaks = seq(0, 6000000000, by = 200000000), labels = no_scientific) 
-  #theme(axis.ticks.length  = unit(0.5, "cm"))
-  #scale_y_continuous(labels = no_scientific)
+       y = "Fossil Fuel emissions",
+       color = "Country") +
+  theme_minimal()
   
   
 #Question 2:
@@ -148,11 +148,11 @@ CO2_emissions_agg <- datCO2 %>%
 #use ggplot to plot World CO2 emissions
 ggplot(CO2_emissions_agg, 
        aes(x = Year, y = total)) +
-      geom_point() +
       geom_line() +
-  labs(title = "Total World CO2 emissions",
+  labs(title = "CO2 Emissions (1750 - 2020)",
        x = "Year",
-       y = "Fossil Fuel Emissions")
+       y = "Fossil Fuel Emissions") +
+  theme_minimal() 
 
 #create df summing all hemispheres temperature anomalies per date
 temp_anomaly_agg <- climate_df %>%
@@ -161,13 +161,16 @@ temp_anomaly_agg <- climate_df %>%
 
 #use ggplot to plot the world temp
 ggplot(temp_anomaly_agg, 
-       aes(x = date, y = total)) +
-  geom_point() +
-  geom_line() +
-  labs(title = "World Temperature",
+       aes(x = date, y = total, fill = total)) +
+  #geom_line(color = "black") +
+  geom_area(color = "black",
+            fill = "darkgrey",
+            alpha = 0.5,
+            show.legend = FALSE) +
+  theme_minimal() +
+  labs(title = "World Temperature (1880 - 2021)",
        x = "Year",
-       y = "Temperature")
-       
+       y = "Temperature (celcius)")
 
 #Question 3:
 #trying to recreate the plot on page 9 of FISHERIES OF THE UNITED STATES 2023 report
