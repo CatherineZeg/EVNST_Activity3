@@ -179,49 +179,59 @@ fisheries <- read.csv("/cloud/project/activity03/FOSS_landings.csv", skip = 1)
 #removes row 11, 2024, so that all the data is from 2014-2023
 fisheries_new <- fisheries[-c(11),]
 
-str(fisheries_new)
-
 #Insert int versions of Pounds, Metric.Tons, and Dollars, columns of fisheries df
 fisheries_new$Pounds_int <- as.numeric(gsub(",", "", fisheries_new$Pounds))
 fisheries_new$Metric.Tons_int <- as.numeric(gsub(",", "", fisheries_new$Metric.Tons))
 fisheries_new$Dollars_int <- as.numeric(gsub(",", "", fisheries_new$Dollars))
 
-#loading in impact font
-install.packages("showtext")
-library(showtext)
-font_add("impact", "/cloud/project/impact.ttf")
-
-font_add_google("impact", family = "impact")
-
-                                   
 barplot(fisheries_new$Pounds_int,
         names.arg = fisheries_new$Year,
-        xlab = "Year",
-        ylab = "Landings (billions of pounds)",
+        xlab = substitute(paste(bold("Year"))),
+        ylab = substitute(paste(bold("Landings"))),
+        col = "#7eb2d4",
+        ylim = c(0,12000000000),
         yaxt = "n",
+        xaxs = "i",
         xaxt = "n",
         family = "Arial") 
-title("U.S. Commercial Landings and Revenue", 
+box()
+title("U.S. Commercial Landings and Revenue",
       adj = 0, 
       line = 3)
-#font.main = "impact")
-mtext("from 2014 to 2023", 
+mtext(substitute(paste(bold("Landings Revenue"))), 
+      side = 4,
+      line = 2,
+      adj = 0.5)
+mtext(substitute(paste(italic("from 2014 to 2023"))), 
       side = 3,
       line = 2,
       adj = 0)
+mtext(substitute(paste(italic("(billions of pounds)"))), 
+      side = 2,
+      line = 2)
+mtext(substitute(paste(italic("(billions of real 2023 US dollars)"))), 
+      side = 4,
+      line = 3)
 axis(2, seq(0, 12000000000, by = 3000000000),
      seq(0,12, by = 3), las = 2, tck = 0) 
-axis(1, at = c(0.5, 2.5, 4.5, 6.5, 11.5),
-    labels = c("2015", "2017", "2019", "2021", "2023"), tck = 0)
-axis(4, seq(0, 12000000000, by = 3000000000),
-     seq(0,12, by = 3), las = 2, tck = 0)
+axis(1, at = c(2, 4.25, 6.75, 9.25, 11.5),
+    labels = c("2015", "2017", "2019", "2021", "2023"),
+    tck = 0)
+par(mar = c(5, 5, 5, 5), xpd=TRUE)
 par(new = TRUE) 
-plot(fisheries_new$Dollars_int, 
-     pch = 19, 
-     type = "b",
-     col = "blue", 
+plot(fisheries_new$Year, 
+     fisheries_new$Dollars_int,
+     pch = 21, 
+     type = "o",
+     col = "#313d79",
+     bg = "#313d79",
+     cex = 1,
+     lwd = 3,
      axes = FALSE,
      ylab = "", 
-     xlab = "")
+     xlab = "",
+     ylim = c(0, 12000000000))
+axis(4, seq(0, 12000000000, by = 3000000000),
+     seq(0,12, by = 3), las = 2, tck = 0)
+mtext("⏹ Landings ⏺ Revenue", side = 3, line = 0.5)
 
-  
