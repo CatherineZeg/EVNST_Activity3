@@ -47,7 +47,7 @@ NorthA <- datCO2 %>%
            Entity == "Mexico" |
            Entity == "Canada")
 
-#plot each country's CO2 emmissions on the same graph using ggplot
+#plot each country's CO2 emissions on the same graph using ggplot
 ggplot(NorthA, 
        aes(x = Year, y = CO2, color = Entity)) +
   geom_point() +
@@ -133,7 +133,7 @@ ggplot(pfi_CO2,
   )+
   labs(title = "CO2 Emissions of France, Poland, and Italy",
        x = "Year",
-       y = "Fossil Fuel emissions",
+       y = "Fossil Fuel emissions (billions of tons of CO2)",
        color = "Country") +
   theme_minimal()
   
@@ -151,7 +151,7 @@ ggplot(CO2_emissions_agg,
       geom_line() +
   labs(title = "CO2 Emissions (1750 - 2020)",
        x = "Year",
-       y = "Fossil Fuel Emissions") +
+       y = "Fossil Fuel Emissions (billions of tons of CO2)") +
   theme_minimal() 
 
 #create df summing all hemispheres temperature anomalies per date
@@ -249,6 +249,6 @@ plot(fisheries_new$Year,
 #Adds axis ticks on the right y-axis
 axis(4, seq(0, 12000000000, by = 3000000000),
      seq(0,12, by = 3), las = 2, tck = 0)
-#Adds legend, reffering to the symbols of Landings and Revenue
+#Adds legend, referring to the symbols of Landings and Revenue
 mtext("⏹ Landings ⏺ Revenue", side = 3, line = 0.5)
 
