@@ -162,9 +162,8 @@ temp_anomaly_agg <- climate_df %>%
 #use ggplot to plot the world temp
 ggplot(temp_anomaly_agg, 
        aes(x = date, y = total, fill = total)) +
-  #geom_line(color = "black") +
-  geom_area(color = "black",
-            fill = "darkgrey",
+  geom_area(color = "#48B8D0",
+            fill = "#8AE1FC",
             alpha = 0.5,
             show.legend = FALSE) +
   theme_minimal() +
@@ -187,6 +186,8 @@ fisheries_new$Pounds_int <- as.numeric(gsub(",", "", fisheries_new$Pounds))
 fisheries_new$Metric.Tons_int <- as.numeric(gsub(",", "", fisheries_new$Metric.Tons))
 fisheries_new$Dollars_int <- as.numeric(gsub(",", "", fisheries_new$Dollars))
 
+#plot Landings and Landings revenue using base R
+#create bar plot of the total Landings per year
 barplot(fisheries_new$Pounds_int,
         names.arg = fisheries_new$Year,
         xlab = substitute(paste(bold("Year"))),
@@ -197,31 +198,42 @@ barplot(fisheries_new$Pounds_int,
         xaxs = "i",
         xaxt = "n",
         family = "Arial") 
+#outlines the graph
 box()
+#Adds title
 title("U.S. Commercial Landings and Revenue",
       adj = 0, 
       line = 3)
+#Adds second y-axis title
 mtext(substitute(paste(bold("Landings Revenue"))), 
       side = 4,
       line = 2,
       adj = 0.5)
+#adds more text to the main title
 mtext(substitute(paste(italic("from 2014 to 2023"))), 
       side = 3,
       line = 2,
       adj = 0)
+#adds more text to the first y-axis title
 mtext(substitute(paste(italic("(billions of pounds)"))), 
       side = 2,
       line = 2)
+#adds more text to the second y-axis title
 mtext(substitute(paste(italic("(billions of real 2023 US dollars)"))), 
       side = 4,
       line = 3)
+#Adds axis ticks on the left y-axis
 axis(2, seq(0, 12000000000, by = 3000000000),
      seq(0,12, by = 3), las = 2, tck = 0) 
+#Adds axis ticks on the x-axis
 axis(1, at = c(2, 4.25, 6.75, 9.25, 11.5),
     labels = c("2015", "2017", "2019", "2021", "2023"),
     tck = 0)
+#set the margin dimensions
 par(mar = c(5, 5, 5, 5), xpd=TRUE)
+#allows pairing the second graph on top
 par(new = TRUE) 
+#plot a line graph from the Landings Revenue
 plot(fisheries_new$Year, 
      fisheries_new$Dollars_int,
      pch = 21, 
@@ -234,7 +246,9 @@ plot(fisheries_new$Year,
      ylab = "", 
      xlab = "",
      ylim = c(0, 12000000000))
+#Adds axis ticks on the right y-axis
 axis(4, seq(0, 12000000000, by = 3000000000),
      seq(0,12, by = 3), las = 2, tck = 0)
+#Adds legend, reffering to the symbols of Landings and Revenue
 mtext("⏹ Landings ⏺ Revenue", side = 3, line = 0.5)
 
